@@ -2,22 +2,22 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono'
 import { sign, verify } from 'hono/jwt'
-import { signupInput,signInInput } from '@daksh931/project-medium' 
+import { signupInput, signInInput } from '@daksh931/project-medium'
 import { comparepass, hashpass } from '../hashing/PasswordHash'
 
 export const userRouter = new Hono<{
-    Bindings:{
-        DATABASE_URL:string,
-        JWT_SECRET:string
-      },
+  Bindings: {
+    DATABASE_URL: string,
+    JWT_SECRET: string
+  },
 }>();
 
-userRouter.get('/', (c) => {
-  return c.text('Hello Hono!') 
-})
+// userRouter.get('/', (c) => {
+//   return c.text('Hello Hono!') 
+// })
 
-//sign up router api
-userRouter.post('/signup' , async (c) => {
+//sign up router api----------
+userRouter.post('/signup', async (c) => {
   // db conn
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -26,46 +26,45 @@ userRouter.post('/signup' , async (c) => {
 
   const body = await c.req.json();
   //zod validation
-  const {success} = signupInput.safeParse(body); 
-  if(!success){
+  const { success } = signupInput.safeParse(body);
+  if (!success) {
     c.status(411);
     return c.json({
-      message:"Inputs not correct"
+      message: "Inputs not correct"
     })
   }
 
-  //create and save
+  //create user and save
   try {
-
     const findUser = await prisma.user.findUnique({
-      where:{
-        email:body.email
+      where: {
+        email: body.email
       }
     })
 
-    if(findUser){
+    if (findUser) {
       c.status(411);
       return c.json({
-        message:"User already exist"
+        message: "User already exist"
       })
     }
-    const userHashPass = await hashpass(body.password); 
+    const userHashPass = await hashpass(body.password);
     const user = await prisma.user.create({
-      data:{
-        email  : body.email,
+      data: {
+        email: body.email,
+        name: body.name,
         password: userHashPass,
       },
     })
 
-    const token = await sign({id: user.id}, c.env.JWT_SECRET);
-  
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+
     return c.json({
-      jwt:token
+      jwt: token
     })
 
   } catch (e) {
-    c.status(411);
-    return c.text("User Already Exist");
+    return c.status(403);
   }
 
   // return c.text("signup")
@@ -73,55 +72,55 @@ userRouter.post('/signup' , async (c) => {
 
 
 //signin Router
-userRouter.post('/login' ,async (c) => {
+userRouter.post('/login', async (c) => {
   const body = await c.req.json();
   const sucess = signInInput.safeParse(body);
-  if(!sucess){
+  if (!sucess) {
     c.status(411);
     return c.json({
-      message:"Invalid Inputs"
+      message: "Invalid Inputs"
     })
   }
-  
-  try {  
+
+  try {
     const prisma = new PrismaClient({
-      datasourceUrl : c.env.DATABASE_URL,
+      datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-  const user = await prisma.user.findUnique({
-    where:{
-      email : body.email
+    const user = await prisma.user.findUnique({
+      where: {
+        email: body.email
+      }
+    });
+
+    if (!user) {
+      c.status(403);
+      return c.json({ error: "user not found!" });
     }
-  });
 
-  if(!user){
-    c.status(403);
-    return c.json({error: "user not found!"});
-  }
+    //check pass
+    const checkUser = await comparepass(body.password, user.password);
+    if (!checkUser) {
+      c.status(403);
+      c.json({
+        message: "Invalid Password"
+      })
+    }
 
-  //check pass
-  const checkUser = await comparepass(body.password , user.password);
-  if(!checkUser){
-    c.status(403);
-    c.json({
-      message : "Invalid Password"
+    //const {password , ...rest} = user; 
+    // from above line we have password and rest of user obj values and by returning 'rest' we able to
+    //  send all Obj values except pass to frontend... 
+    const { password, ...rest } = user;
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+
+    return c.json({
+      jwt: token,
+      user: rest
     })
   }
-
-  //const {password , ...rest} = user; 
-  // from above line we have password and rest of user obj values and by returning 'rest' we able to
-  //  send all Obj values except pass to frontend... 
-  const {password , ...rest} = user;
-  const token = await sign({id: user.id}, c.env.JWT_SECRET);
-  
-  return c.json({
-    jwt:token,
-    user:rest
-  })
-} 
-catch (e) {
-  c.status(411);
-  return c.text("invalid");
-}
+  catch (e) {
+    c.status(411);
+    return c.text("invalid");
+  }
 })
 
 
