@@ -22,7 +22,7 @@ blogRouter.use('/*', async (c, next) => {
     try {
         const authHeader = c.req.header("authorization") || "";
         const response = await verify(authHeader, c.env.JWT_SECRET);
-        if (response) {
+        if (response ) {
             c.set("userId", response.id);
             await next();
         }
