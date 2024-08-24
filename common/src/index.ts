@@ -17,7 +17,7 @@ export const createPost = z.object({
     content : z.string().min(10)
 })
 
-export const UpdatePost = z.object({
+export const updatePost = z.object({
     title: z.string().min(3),
     content: z.string().min(10),
     id: z.string()
@@ -29,5 +29,5 @@ export const UpdatePost = z.object({
 export type SignupInput = z.infer<typeof signupInput>;
 export type SignInInput = z.infer<typeof signInInput>;
 export type CreatePost = z.infer<typeof createPost>;
-export type UpdatePost = z.infer<typeof UpdatePost>;
+export type UpdatePost = z.infer<typeof updatePost>;
 // https://github.com/chandanck22/vibranthive
