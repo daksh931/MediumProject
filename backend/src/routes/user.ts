@@ -3,6 +3,7 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono'
 import { sign, verify } from 'hono/jwt'
 import { signupInput,signInInput } from '@daksh931/project-medium' 
+import { comparepass, hashpass } from '../hashing/PasswordHash'
 
 export const userRouter = new Hono<{
     Bindings:{
@@ -17,12 +18,14 @@ userRouter.get('/', (c) => {
 
 //sign up router api
 userRouter.post('/signup' , async (c) => {
-
+  // db conn
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
+
   const body = await c.req.json();
+  //zod validation
   const {success} = signupInput.safeParse(body); 
   if(!success){
     c.status(411);
@@ -30,11 +33,27 @@ userRouter.post('/signup' , async (c) => {
       message:"Inputs not correct"
     })
   }
+
+  //create and save
   try {
+
+    const findUser = await prisma.user.findUnique({
+      where:{
+        email:body.email
+      }
+    })
+
+    if(findUser){
+      c.status(411);
+      return c.json({
+        message:"User already exist"
+      })
+    }
+    const userHashPass = await hashpass(body.password); 
     const user = await prisma.user.create({
       data:{
         email  : body.email,
-        password: body.password,
+        password: userHashPass,
       },
     })
 
@@ -79,12 +98,27 @@ userRouter.post('/login' ,async (c) => {
     return c.json({error: "user not found!"});
   }
 
+  //check pass
+  const checkUser = await comparepass(body.password , user.password);
+  if(!checkUser){
+    c.status(403);
+    c.json({
+      message : "Invalid Password"
+    })
+  }
+
+  //const {password , ...rest} = user; 
+  // from above line we have password and rest of user obj values and by returning 'rest' we able to
+  //  send all Obj values except pass to frontend... 
+  const {password , ...rest} = user;
   const token = await sign({id: user.id}, c.env.JWT_SECRET);
   
   return c.json({
-    jwt:token
+    jwt:token,
+    user:rest
   })
-} catch (e) {
+} 
+catch (e) {
   c.status(411);
   return c.text("invalid");
 }
