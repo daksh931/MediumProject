@@ -37,8 +37,8 @@ const Login = () => {
     <div className="flex justify-center items-center w-[100vw] h-[93vh] bg-white ">
 
 <form onSubmit={handleLogin}>
-        <div className="flex flex-col text-[15px] items-center h-96 w-80 rounded-md min-h-80 bg-zinc-200
-          px-5  pt-16 shadow-xl shadow-zinc-100 hover:shadow-zinc-300 hover:border-slate-500 hover:border-[1px]">
+        <div className="flex flex-col text-[15px] items-center h-96 w-80 rounded-md min-h-80 bg-zinc-300
+          px-5  pt-16 shadow-xl shadow-zinc-400  hover:shadow-zinc-300 hover:border-slate-500 hover:border-[1px]">
             
             <span>Don't have an account?   
             <Link to={"/signup"} className="text-sm pl-1 text-slate-500 hover:text-black">  signup here</Link>
