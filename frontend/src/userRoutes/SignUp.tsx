@@ -4,26 +4,37 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignupInput } from "@daksh931/project-medium";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-
+import { setToken,setUserData } from "../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignUp = () => {
         const naviagte = useNavigate();
+        const dispatch = useDispatch();
         const[registerData,setRegisterData] = useState<SignupInput>({
           email:"",
           name:"",
           password:""
         });
       
-        console.log(registerData);
         const handleSignUp = async (e: React.FormEvent)=>{
           e.preventDefault();
 
           try {
-            console.log("inside1");
+
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,registerData);
+            console.log(response.data)
+            console.log(response.data.user);
             const jwt = response.data.jwt;
+            dispatch(setUserData(JSON.parse(JSON.stringify(response.data.user))));
+            localStorage.setItem("user",JSON.parse(JSON.stringify(response.data.user)));
+            
+
+            dispatch(setToken(jwt));
             localStorage.setItem("token",jwt);
+
+    
             naviagte("/blogs");
+
           } catch (error) {
             alert("Signup Failed")
               //alert on signup failed

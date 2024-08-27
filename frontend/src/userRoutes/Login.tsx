@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignInInput } from "@daksh931/project-medium";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToken, setUserData } from "../store/slices/authSlice";
 
 
@@ -16,7 +16,7 @@ const Login = () => {
           password:""
         });
       
-        const{userData,token} = useSelector((state)=>state.auth);
+        // const{userData,token} = useSelector((state)=>state.auth);
 
         // console.log(loginData);
         const handleLogin = async (e: React.FormEvent)=>{
@@ -31,7 +31,7 @@ const Login = () => {
             localStorage.setItem("token",jwt);
             
             dispatch(setUserData(JSON.parse(response.data.user)));
-            localStorage.setItem("user",JSON.stringify(response.data.user));
+            localStorage.setItem("user",JSON.parse(response.data.user));
             
             // console.log(userData);
             // console.log(token);
