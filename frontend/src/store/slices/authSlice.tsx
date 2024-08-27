@@ -6,7 +6,7 @@ interface UserState {
 }
 const initialState:UserState= {
   userData:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")!):null,
-  token:localStorage.getItem("token")?JSON.parse(localStorage.getItem("token")!):null,
+  token:localStorage.getItem("token")?(localStorage.getItem("token")!):null,
 }
 
 const authSlice = createSlice({

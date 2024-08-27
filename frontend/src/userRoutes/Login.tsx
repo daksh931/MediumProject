@@ -4,15 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignInInput } from "@daksh931/project-medium";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken, setUserData } from "../store/slices/authSlice";
 
 
 const Login = () => {
-        const naviagte = useNavigate();
+  const dispatch = useDispatch();
+  const naviagte = useNavigate();
         const[loginData,setLoginData] = useState<SignInInput>({
           email:"",
           password:""
         });
       
+        const{userData,token} = useSelector((state)=>state.auth);
+
         // console.log(loginData);
         const handleLogin = async (e: React.FormEvent)=>{
           e.preventDefault();
@@ -20,10 +25,17 @@ const Login = () => {
           try {
             console.log("inside1");
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`,loginData);
+            
             const jwt = response.data.jwt;
+            dispatch(setToken(jwt));
             localStorage.setItem("token",jwt);
-            console.log(response.data)
-            // localStorage.setItem("token",response.data.user);
+            
+            dispatch(setUserData(JSON.parse(response.data.user)));
+            localStorage.setItem("user",JSON.stringify(response.data.user));
+            
+            // console.log(userData);
+            // console.log(token);
+
             naviagte("/blogs");
           } catch (error) {
             alert("Login Failed")
@@ -49,6 +61,8 @@ const Login = () => {
               value={loginData.password} onChange={(e)=>setLoginData({...loginData,password:e.target.value})}/> 
 
             <div className="mt-9"> <Button>Login</Button> </div>
+
+
         </div>
 </form>
 
