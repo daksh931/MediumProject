@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
-import { logoutUser } from "../store/slices/authSlice";
+import { logoutUser } from "../../store/slices/authSlice";
+
 
 const Navbar = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,11 @@ const Navbar = () => {
 
                         Blogs
                     </div>
+
+                    <div className={`${style}`}>
+                    <Link to={"/addblog"}>Add Post </Link>
+                    </div>
+
                     <div className={`${style}`}>
 
                         About

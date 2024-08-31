@@ -1,11 +1,11 @@
 import { useState } from "react"
-import Button from "../components/Button"
+import Button from "../../components/Button"
 import { Link, useNavigate } from "react-router-dom";
 import { SignInInput } from "@daksh931/project-medium";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 import { useDispatch } from "react-redux";
-import { setToken, setUserData } from "../store/slices/authSlice";
+import { setToken, setUserData } from "../../store/slices/authSlice";
 
 
 const Login = () => {
@@ -30,8 +30,8 @@ const Login = () => {
             dispatch(setToken(jwt));
             localStorage.setItem("token",jwt);
             
-            dispatch(setUserData(JSON.parse(response.data.user)));
-            localStorage.setItem("user",JSON.parse(response.data.user));
+            dispatch(setUserData(response.data.user));
+            localStorage.setItem("user",(JSON.stringify(response.data.user)));
             
             // console.log(userData);
             // console.log(token);

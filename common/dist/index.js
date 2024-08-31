@@ -16,7 +16,8 @@ exports.signInInput = zod_1.default.object({
 });
 exports.createPost = zod_1.default.object({
     title: zod_1.default.string().min(3),
-    content: zod_1.default.string().min(10)
+    content: zod_1.default.string().min(10),
+    author: zod_1.default.number()
 });
 exports.updatePost = zod_1.default.object({
     title: zod_1.default.string().min(3),

@@ -1,4 +1,5 @@
-import Button from "../components/Button"
+import { Link } from "react-router-dom"
+import Button from "../../components/Button"
 
 
 const Home = () => {
@@ -29,7 +30,7 @@ const Home = () => {
                             <h1 className="text-center"> Now!</h1>
                         </div>
                         <div>
-                            <Button> Sign up</Button>
+                            <Button> <Link to={"/signup"}> Sign up </Link></Button>
                         </div>
                     </div>
                 </div>
