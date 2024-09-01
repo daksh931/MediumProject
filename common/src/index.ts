@@ -15,8 +15,7 @@ export const signInInput = z.object({
 
 export const createPost = z.object({
     title: z.string().min(3),
-    content : z.string().min(10),
-    author : z.number()
+    content : z.string().min(10)
 
 })
 

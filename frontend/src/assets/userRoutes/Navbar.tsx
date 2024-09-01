@@ -9,7 +9,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { userData } = useSelector((state) => state.auth);
 
-    const handleLogout = ()=>{
+    const handleLogout = () => {
         dispatch(logoutUser());
         navigate("/login");
     }
@@ -20,23 +20,24 @@ const Navbar = () => {
 
                 <div className="hidden sm:flex ">
 
-                    <div className={`${style}`}>
-                        <Link to={"/home"}> Home</Link>
-                    </div>
+                    <Link to={"/"}>
+                        <div className={`${style}`}> Home </div>
+                    </Link>
+
                     <div className={`${style}`}>
                         Trending
                     </div>
+
+                    <Link to={"/blogs"}>
+                        <div className={`${style}`}>Blogs</div>
+                    </Link>
+
+
+                    <Link to={"/addblog"}>
+                        <div className={`${style}`}> Add Blog</div> 
+                    </Link>
+
                     <div className={`${style}`}>
-
-                        Blogs
-                    </div>
-
-                    <div className={`${style}`}>
-                    <Link to={"/addblog"}>Add Post </Link>
-                    </div>
-
-                    <div className={`${style}`}>
-
                         About
                     </div>
                 </div>
@@ -44,11 +45,11 @@ const Navbar = () => {
                 <div className="hidden sm:flex sm:visible">
                     {userData ?
                         <div className="flex">
-                        <div className={`${style}`}> {userData.name}
-                        </div>
-                        <div className="text-white flex justify-center items-center text-3xl font-extrabold cursor-pointer px-1 mr-2 hover:text-slate-200
+                            <div className={`${style}`}> {userData.name}
+                            </div>
+                            <div className="text-white flex justify-center items-center text-3xl font-extrabold cursor-pointer px-1 mr-2 hover:text-slate-200
                          hover:bg-zinc-700 rounded-lg"><button onClick={handleLogout}>  <CiLogout /> </button></div>
-                        </div>:
+                        </div> :
                         <div className="flex">
                             <div className={`${style}`}>
                                 <Link to={"/signup"}> Sign up</Link>
