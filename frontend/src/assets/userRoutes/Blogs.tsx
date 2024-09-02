@@ -26,7 +26,7 @@ const Blogs = () => {
             Authorization:localStorage.getItem("token")
           }
         });
-        // console.log(response.data.blogs);
+        console.log(response.data.blogs);
         dispatch(setBlogs(response.data.blogs));
 
       } catch (error) {
@@ -46,6 +46,7 @@ const Blogs = () => {
         blogs.map((item:blogsInterface )=>
           <div key={item.id}>
           <Blog 
+        id={item.id}
         title={item.title}
         description={item.content}
         authorName = {item.author.name}
