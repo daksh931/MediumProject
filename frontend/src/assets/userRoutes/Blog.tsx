@@ -23,7 +23,7 @@ const Blog = (props: blogIFC) => {
     }
   }
   const handleExplore = ()=>{
-    // navigate(`/blog/${props.id}`)
+    navigate(`/blog/${props.id}`)
     window.open(`/blog/${props.id}`,'_blank');
   }
 
