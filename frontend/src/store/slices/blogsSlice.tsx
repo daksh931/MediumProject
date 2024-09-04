@@ -1,16 +1,15 @@
-import { CreatePost as BlogInterface }  from "@daksh931/project-medium";
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
-// export interface BlogInterface{
-//     id: string;
-//     authorId: number;
-//     title: string;
-//     content: string;
-//     published: boolean;
-//     author: {
-//         name: string;
-//     }
-// }
+export interface BlogInterface{
+    id: string;
+    authorId: number;
+    title: string;
+    content: string;
+    published: boolean;
+    author: {
+        name: string;
+    }
+}
 export interface BlogsStateInterface {
     blogs: BlogInterface[];
   }

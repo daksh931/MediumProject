@@ -25,10 +25,10 @@ const BlogPage = () => {
                   Authorization:localStorage.getItem("token")
                 }
               });
-              console.log(response.data);
-              console.log(response.data.blog.title);
-              console.log(response.data.blog.content);
-              console.log(response.data.blog.author.name);
+              // console.log(response.data);
+              // console.log(response.data.blog.title);
+              // console.log(response.data.blog.content);
+              // console.log(response.data.blog.author.name);
               setBlogData({
                 title: response.data.blog.title,
                 content: response.data.blog.content,

@@ -1,19 +1,28 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setBlogs } from "../../store/slices/blogsSlice"
+import { BlogInterface, setBlogs } from "../../store/slices/blogsSlice"
 import axios from "axios"
 import { BACKEND_URL } from "../../config"
 import { useEffect } from "react"
 import Blog from "./Blog"
+import { RootState } from "../../store"
 
-export interface blogsInterface{
-  id:"",
-  title:"",
-  content:"",
-  author:{
-    name:""
-  }
-}
+// export interface blogsInterface{
+//   id:"",
+//   title:"",
+//   content:"",
+//   author:{
+//     name:""
+//   }
+// }
 
+// export interface blogsInterface {
+//   id: string;
+//   title: string;
+//   content: string;
+//   author: {
+//     name: string;
+//   };
+// }
 const Blogs = () => {
   const dispatch = useDispatch();
 
@@ -36,14 +45,14 @@ const Blogs = () => {
     fetchBlpgs();
   }, [])
   
-  const {blogs} = useSelector((state)=> state.blogs);
+  const {blogs} = useSelector((state:RootState)=> state.blogs);
   // console.log("fetched blogs using state " ,blogs);
 
 
     return (
     <>
     {
-        blogs.map((item:blogsInterface )=>
+        blogs.map((item:BlogInterface )=>
           <div key={item.id}>
           <Blog 
         id={item.id}

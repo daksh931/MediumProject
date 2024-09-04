@@ -3,10 +3,10 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 // import BlogPage from "./BlogPage";
 
 export interface blogIFC {
-  id: "",
-  title: "",
-  description: "",
-  authorName: "",
+  id: string,
+  title: string,
+  description: string,
+  authorName: string,
 }
 
 const Blog = (props: blogIFC) => {

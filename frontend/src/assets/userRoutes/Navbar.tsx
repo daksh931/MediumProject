@@ -2,12 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
 import { logoutUser } from "../../store/slices/authSlice";
+import { RootState } from "../../store";
 
 
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { userData } = useSelector((state) => state.auth);
+    const { userData } = useSelector((state:RootState) => state.auth);
 
     const handleLogout = () => {
         dispatch(logoutUser());
