@@ -4,6 +4,7 @@ import { CreatePost } from "@daksh931/project-medium"
 // import { useSelector } from "react-redux"
 import { BACKEND_URL } from "../../config"
 import axios from "axios"
+import.meta.env.VITE_BACKEND_URL as 'BACKEND_URL'
 
 const CreateBlog = () => {
     // const { userData } = useSelector((state) => state.auth);

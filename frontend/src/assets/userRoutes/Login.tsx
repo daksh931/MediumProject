@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setToken, setUserData } from "../../store/slices/authSlice";
 
 
+
 const Login = () => {
   const dispatch = useDispatch();
   const naviagte = useNavigate();
@@ -23,7 +24,7 @@ const Login = () => {
           e.preventDefault();
 
           try {
-            console.log("inside1");
+            // console.log("inside1");
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`,loginData);
             
             const jwt = response.data.jwt;
