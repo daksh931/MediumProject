@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { FaExternalLinkAlt } from "react-icons/fa";
-import BlogPage from "./BlogPage";
-import { useNavigate } from "react-router-dom";
+// import BlogPage from "./BlogPage";
 
 export interface blogIFC {
   id: "",
@@ -12,7 +11,7 @@ export interface blogIFC {
 
 const Blog = (props: blogIFC) => {
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
   // const maxLength = 250;
 
@@ -23,7 +22,7 @@ const Blog = (props: blogIFC) => {
     }
   }
   const handleExplore = ()=>{
-    navigate(`/blog/${props.id}`)
+    // navigate(`/blog/${props.id}`)
     window.open(`/blog/${props.id}`,'_blank');
   }
 
